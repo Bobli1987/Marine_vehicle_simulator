@@ -1,6 +1,6 @@
 __author__ = 'Bo'
 
-"""REMUS14.py
+"""REMUS_2D.py
 
 Class REMUS is defined in the module. The vehicle moves on a horizontal plane in a uniform and steady flow.
 No control system is involved.
