@@ -71,7 +71,7 @@ def animate(frame_number):
     vehicle_1.step()
     vehicle_2.step()
     # update the time displayed
-    # time_text.set_text('time = %.3f sec' % vehicle_1.time_elapsed)
+    time_text.set_text('time = %.3f sec' % vehicle_1.time_elapsed)
 
     def update(vehicle, coords, center, trajectory, arrow):
         # update the center and trajectory of the vehicle
@@ -84,12 +84,11 @@ def animate(frame_number):
         trans = t_start.transform([vehicle.position[1], vehicle.position[0]]) - coords
         tr = tr.translate(trans[0], trans[1])
         t_end = t_start + tr
-
         arrow.set_transform(t_end)
         return center, trajectory, arrow
 
     return (update(vehicle_1, coords_1, center_1, trajectory_1, arrow_1)
-            + update(vehicle_2, coords_2, center_2, trajectory_2, arrow_2)) + (time_text,)
+            + update(vehicle_2, coords_2, center_2, trajectory_2, arrow_2) + (time_text,))
 
 interval = 900 * vehicle_1.step_size
 ani = animation.FuncAnimation(fig, animate, interval=interval, blit=True,
