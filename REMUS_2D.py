@@ -113,21 +113,21 @@ class REMUS:
                            REMUS.Nuv * velocity[0] * velocity[1] +
                            REMUS.Nur * velocity[0] * velocity[2]], dtype='float')
 
-    def dvelocity_dt(self, velocity, t):
+    def velocity_derivative(self, velocity, t):
         """compute the derivative of the given velocity"""
         return -np.linalg.inv(self.added_mass_matrix() + self.rigid_body_mass_matrix()).dot(
             self.rigid_body_cc_matrix(velocity).dot(velocity) + self.added_mass_cc_matrix(velocity).dot(velocity) -
             self.viscous_force(velocity) - REMUS.actuation
         )
 
-    def dposition_dt(self, position, t):
+    def position_derivative(self, position, t):
         """compute the derivative of the given position"""
         return self.transformation_matrix(position).dot(self.velocity)
 
     def step(self):
         """execute one time step of length dt and update the velocity and position of the vehicle"""
-        self.position = integrate.odeint(self.dposition_dt, self.position, [0, self.step_size])[1]
-        self.relative_velocity = integrate.odeint(self.dvelocity_dt, self.relative_velocity, [0, self.step_size])[1]
+        self.position = integrate.odeint(self.position_derivative, self.position, [0, self.step_size])[1]
+        self.relative_velocity = integrate.odeint(self.velocity_derivative, self.relative_velocity, [0, self.step_size])[1]
         self.velocity = self.relative_velocity \
             + np.linalg.inv(self.transformation_matrix(self.position)).dot(REMUS.ocean_current)
         self.time_elapsed += self.step_size
